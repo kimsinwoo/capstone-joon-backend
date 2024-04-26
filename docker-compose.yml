@@ -5,14 +5,13 @@ services:
     container_name: maria
     environment:
       - MARIADB_ROOT_PASSWORD=ROOT
+      - MARIADB_DATABASE=gbsw
+      - MARIADB_USER=jjoon
+      - MARIADB_PASSWORD=1234
+      - TZ=ASIA/Seoul
+
     ports:
       - "3307:3306"
-
-  redis:
-    container_name: redis
-    image: redis
-    ports:
-      - "6379:6379"
 
   spring:
     build:

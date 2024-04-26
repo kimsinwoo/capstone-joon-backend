@@ -1,6 +1,5 @@
 package caps.chat.service.capstonproject2.Chat.Service;
 
-
 import caps.chat.service.capstonproject2.Chat.Dto.ChatRoom;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;

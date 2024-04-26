@@ -1,8 +1,7 @@
 package caps.chat.service.capstonproject2.Chat.Dto;
 
 import caps.chat.service.capstonproject2.Chat.Service.ChatService;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.util.HashSet;
