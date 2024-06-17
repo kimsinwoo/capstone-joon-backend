@@ -2,6 +2,7 @@ package caps.chat.service.capstonproject2.Shop.Entity;
 
 
 import caps.chat.service.capstonproject2.JwtLogin.Entity.Student;
+import caps.chat.service.capstonproject2.Shop.Dto.ItemDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,10 +13,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.sql.Timestamp;
 
 @Entity
-@NoArgsConstructor
 @Data
 @Builder
-@AllArgsConstructor
+@AllArgsConstructor @NoArgsConstructor
 public class gbswItem {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
@@ -24,12 +24,23 @@ public class gbswItem {
     public String title;
 
     @Column(nullable = false, unique = true)
-    public String imgPath;
+    public String itemImgPath;
 
     @ManyToOne
-    @JoinColumn(name = "stuId")
+    @JoinColumn(name = "stuName")
     public Student student;
+
+    @Column(nullable = false, unique = true)
+    public int price;
 
     @CreationTimestamp
     private Timestamp createDate;
+
+    public gbswItem (ItemDto.ItemRequest itemDto){
+        this.title = itemDto.getTitle();
+        this.price = itemDto.getPrice();
+        this.student = itemDto.getStudent();
+
+    }
+
 }

@@ -4,14 +4,10 @@ services:
     image: mariadb
     container_name: maria
     environment:
-      - MARIADB_ROOT_PASSWORD=ROOT
-      - MARIADB_DATABASE=gbsw
-      - MARIADB_USER=jjoon
-      - MARIADB_PASSWORD=1234
-      - TZ=ASIA/Seoul
-
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+      MARIADB_DATABASE: ${MARIADB_DATABASE}
     ports:
-      - "3307:3306"
+      - "3306:3306"
 
   spring:
     build:
@@ -19,8 +15,12 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+
     volumes:
       - ./:/app/
     depends_on:
       - database
-      - redis
