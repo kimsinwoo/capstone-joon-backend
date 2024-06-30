@@ -1,4 +1,4 @@
-version: "3.8"
+
 services:
   database:
     image: mariadb
@@ -6,6 +6,8 @@ services:
     environment:
       MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
       MARIADB_DATABASE: ${MARIADB_DATABASE}
+      MARIADB_USER: ${MARIADB_DATABASE_USERNAME}
+      MARIADB_PASSWORD: ${MARIADB_DATABASE_PASSWORD}
     ports:
       - "3306:3306"
 
