@@ -2,6 +2,7 @@ package caps.chat.service.capstonproject2.Domain.Member.Service;
 
 import caps.chat.service.capstonproject2.Domain.Member.Dto.StudentRequestDto;
 import caps.chat.service.capstonproject2.Domain.Member.Dto.StudentResponseDto;
+import caps.chat.service.capstonproject2.Domain.Member.Security.Util.JwtUtil;
 import caps.chat.service.capstonproject2.Global.Exception.DuplicateId;
 import caps.chat.service.capstonproject2.Global.Exception.IdNotFoundException;
 import caps.chat.service.capstonproject2.Global.Exception.IncorrectPwd;
@@ -24,10 +25,13 @@ public class StudentLoginService{
     private final StudentRepository studentRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
+    private final JwtUtil jwtUtil;
+
     @Autowired
-    public StudentLoginService(@Qualifier("securityConfigEncoder") BCryptPasswordEncoder bCryptPasswordEncoder, StudentRepository studentRepository){
+    public StudentLoginService(@Qualifier("securityConfigEncoder") BCryptPasswordEncoder bCryptPasswordEncoder, StudentRepository studentRepository, JwtUtil jwtUtil){
         this.passwordEncoder = bCryptPasswordEncoder;
         this.studentRepository = studentRepository;
+        this.jwtUtil = jwtUtil;
     }
 
     public StudentResponseDto signUp(Student student){
@@ -43,18 +47,24 @@ public class StudentLoginService{
 
 
     public StudentResponseDto signIn(StudentRequestDto.SignInDto SignIn) {
-        boolean isValid = false;
-        Student loggedStu = studentRepository.findByStuId(SignIn.getStuId());
-        if(loggedStu != null){
-            isValid = BCrypt.checkpw(SignIn.getStuPwd(), loggedStu.getStuPwd());
-        }else{
+        Student student = studentRepository.findByStuId(SignIn.getStuId());
+
+        if (student == null) {
             throw IdNotFoundException.EXCEPTION;
         }
-        if (isValid){
-            return StudentResponseDto.from(loggedStu);
-        }else {
+
+        if (!passwordEncoder.matches(SignIn.getStuPwd(), student.getStuPwd())) {
             throw IncorrectPwd.EXCEPTION;
         }
+
+        String token = jwtUtil.generateToken(student.getStuName());
+        return new StudentResponseDto(
+                student.getIsDeleted(),
+                student.getUpdateAt(),
+                student.getCreateAt(),
+                student.getStuId(),
+                student.getStuName(),
+                token);
     }
 
     public Student findByName(String name) {

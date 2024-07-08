@@ -4,6 +4,7 @@ package caps.chat.service.capstonproject2.Domain.Member.Controller;
 import caps.chat.service.capstonproject2.Domain.Member.Dto.StudentRequestDto;
 import caps.chat.service.capstonproject2.Domain.Member.Dto.StudentResponseDto;
 import caps.chat.service.capstonproject2.Domain.Member.Entity.Student;
+import caps.chat.service.capstonproject2.Domain.Member.Security.Util.JwtUtil;
 import caps.chat.service.capstonproject2.Domain.Member.Service.StudentLoginService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,9 @@ import java.util.List;
 public class StudentController {
     private final StudentLoginService StudentService;
 
+    private final JwtUtil jwtUtil;
+
+
     @PostMapping("/signUp")
     public ResponseEntity<StudentResponseDto> SignUp(@RequestBody Student student){
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -30,8 +34,8 @@ public class StudentController {
     }
     @PostMapping("/signIn")
     public ResponseEntity<StudentResponseDto> login(@RequestBody StudentRequestDto.SignInDto SignIn){
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(StudentService.signIn(SignIn));
+        StudentResponseDto responseDto = StudentService.signIn(SignIn);
+        return ResponseEntity.ok(responseDto);
     }
 
     @GetMapping("/find/{stuName}")

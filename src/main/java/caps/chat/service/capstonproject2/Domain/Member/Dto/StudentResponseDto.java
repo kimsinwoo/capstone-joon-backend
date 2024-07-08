@@ -12,13 +12,15 @@ public class StudentResponseDto extends ResponseDto {
 
     private final Long stuId;
     private final String stuName;
+    private final String token;
 
 
     @Builder
-    public StudentResponseDto(Integer isDeleted, LocalDateTime createAt, LocalDateTime updateAt, Long stuId, String stuName){
+    public StudentResponseDto(Integer isDeleted, LocalDateTime createAt, LocalDateTime updateAt, Long stuId, String stuName, String token){
         super(isDeleted, createAt, updateAt);
         this.stuId = stuId;
         this.stuName = stuName;
+        this.token = token;
     }
 
     public static StudentResponseDto from(Student student){

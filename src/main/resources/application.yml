@@ -47,4 +47,4 @@ error:
 
 jwt:
   secret: ${SECRET_JWT_KEY}
-  expirationTime: 36000
+  expirationTime: ${SECRET_TIME}
